@@ -1,4 +1,5 @@
 from datetime import datetime
+from app.memory.redis_memory import save_memory, get_memory
 
 
 def nba_playoffs_tool():
@@ -23,7 +24,7 @@ def devops_tool():
             "Terraform",
             "Ansible",
             "AWS",
-            "Redis or MongoDB",
+            "Redis",
             "CloudWatch/Grafana",
         ],
         "purpose": "AI DevOps Agent Lab for SRE/DevOps portfolio work",
@@ -32,6 +33,27 @@ def devops_tool():
 
 def agent(user_input: str):
     text = user_input.lower()
+
+    if "my name is" in text:
+        name = user_input.split("is", 1)[1].strip()
+        save_memory("user:name", name)
+        return {
+            "tool": "redis_memory_tool",
+            "action": "save",
+            "key": "user:name",
+            "value": name,
+            "message": f"Nice to meet you, {name}. I saved your name in Redis memory.",
+        }
+
+    if "what is my name" in text:
+        name = get_memory("user:name")
+        return {
+            "tool": "redis_memory_tool",
+            "action": "get",
+            "key": "user:name",
+            "value": name,
+            "message": f"Your name is {name}." if name else "I do not have your name saved yet.",
+        }
 
     if "nba" in text or "playoff" in text or "finals" in text:
         return nba_playoffs_tool()
@@ -46,6 +68,7 @@ def agent(user_input: str):
             "NBA playoff status",
             "AWS/DevOps lab planning",
             "Terraform/Ansible/Python app ideas",
+            "Redis memory",
         ],
         "timestamp": str(datetime.now()),
     }
