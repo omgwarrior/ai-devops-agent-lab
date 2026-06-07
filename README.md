@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # AI DevOps Agent Lab
 
 Learning AI Agents with:
