@@ -44,3 +44,15 @@ def eks_clusters_tool(region: str = "us-west-2"):
         "region": region,
         "clusters": run_aws_command(["aws", "eks", "list-clusters", "--region", region]),
     }
+def ec2_instances_tool(region="us-west-2"):
+    return {
+        "tool": "ec2_instances_tool",
+        "region": region,
+        "instances": run_aws_command([
+            "aws",
+            "ec2",
+            "describe-instances",
+            "--region",
+            region
+        ]),
+    }

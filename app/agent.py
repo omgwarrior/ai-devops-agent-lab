@@ -1,6 +1,7 @@
 from datetime import datetime
 from app.memory.redis_memory import save_memory, get_memory
 from app.tools.aws_tools import aws_identity_tool, eks_clusters_tool
+from app.tools.ansible_tools import ansible_nginx_playbook_tool, ansible_inventory_skeleton_tool
 
 
 def nba_playoffs_tool():
@@ -70,7 +71,16 @@ def agent(user_input: str):
 
     if "aws" in text or "terraform" in text or "ansible" in text or "devops" in text:
         return devops_tool()
+    
+    if "ec2" in text or "instances" in text:
+        return ec2_instances_tool()
+    
+    if "ansible inventory" in text or "inventory skeleton" in text:
+        return ansible_inventory_skeleton_tool()
 
+    if "ansible" in text and ("nginx" in text or "playbook" in text):
+        return ansible_nginx_playbook_tool()
+    
     return {
         "tool": "default_agent_response",
         "input": user_input,
