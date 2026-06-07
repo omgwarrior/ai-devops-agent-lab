@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.memory.redis_memory import save_memory, get_memory
-from app.tools.aws_tools import aws_identity_tool
+from app.tools.aws_tools import aws_identity_tool, eks_clusters_tool
 
 
 def nba_playoffs_tool():
@@ -59,6 +59,11 @@ def agent(user_input: str):
 
     if "nba" in text or "playoff" in text or "finals" in text:
         return nba_playoffs_tool()
+
+    if "who am i in aws" in text or "aws identity" in text:
+        return aws_identity_tool()
+    if "eks" in text or "kubernetes cluster" in text:
+        return eks_clusters_tool()
 
     if "who am i in aws" in text or "aws identity" in text:
         return aws_identity_tool()

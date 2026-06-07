@@ -1,23 +1,20 @@
 import subprocess
 import json
 
-def aws_identity_tool():
+
+def run_aws_command(command: list):
     try:
         result = subprocess.run(
-            ["aws", "sts", "get-caller-identity"],
+            command,
             capture_output=True,
             text=True,
             check=True,
         )
 
-        return {
-            "tool": "aws_identity_tool",
-            "identity": json.loads(result.stdout),
-        }
+        return json.loads(result.stdout)
 
     except subprocess.CalledProcessError as e:
         return {
-            "tool": "aws_identity_tool",
             "error": "AWS CLI command failed",
             "stderr": e.stderr,
             "stdout": e.stdout,
@@ -25,12 +22,25 @@ def aws_identity_tool():
 
     except FileNotFoundError:
         return {
-            "tool": "aws_identity_tool",
             "error": "AWS CLI is not installed or not found in PATH",
         }
 
     except Exception as e:
         return {
-            "tool": "aws_identity_tool",
             "error": str(e),
         }
+
+
+def aws_identity_tool():
+    return {
+        "tool": "aws_identity_tool",
+        "identity": run_aws_command(["aws", "sts", "get-caller-identity"]),
+    }
+
+
+def eks_clusters_tool(region: str = "us-west-2"):
+    return {
+        "tool": "eks_clusters_tool",
+        "region": region,
+        "clusters": run_aws_command(["aws", "eks", "list-clusters", "--region", region]),
+    }
