@@ -1,0 +1,15 @@
+services:
+  redis:
+    image: redis:7
+    container_name: ai-devops-agent-redis
+
+  app:
+    build: .
+    container_name: ai-devops-agent-api
+    ports:
+      - "8002:8000"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
