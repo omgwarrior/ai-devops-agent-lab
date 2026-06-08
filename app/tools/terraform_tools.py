@@ -68,3 +68,40 @@ resource "aws_instance" "web" {
 }
 """
     }
+
+
+def terraform_eks_tool():
+    return {
+        "tool": "terraform_eks_tool",
+        "description": "Generates Terraform HCL for a basic AWS EKS cluster using the terraform-aws-modules/eks module.",
+        "terraform": """module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 20.0"
+
+  cluster_name    = "ai-devops-agent-eks"
+  cluster_version = "1.30"
+
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = [
+    aws_subnet.public_1.id
+  ]
+
+  enable_irsa = true
+
+  eks_managed_node_groups = {
+    default = {
+      desired_size = 2
+      min_size     = 1
+      max_size     = 3
+
+      instance_types = ["t3.medium"]
+    }
+  }
+
+  tags = {
+    Environment = "dev"
+    Project     = "ai-devops-agent-lab"
+  }
+}
+"""
+    }
