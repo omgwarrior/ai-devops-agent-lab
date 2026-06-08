@@ -2,7 +2,8 @@ from datetime import datetime
 from app.memory.redis_memory import save_memory, get_memory
 from app.tools.aws_tools import aws_identity_tool, eks_clusters_tool, cloud_inventory_tool
 from app.tools.ansible_tools import ansible_nginx_playbook_tool, ansible_inventory_skeleton_tool
-from app.tools.terraform_tools import terraform_s3_tool
+from app.tools.terraform_tools import terraform_s3_tool, terraform_ec2_tool
+from app.tools.terraform_vpc import terraform_vpc_tool
 
 def nba_playoffs_tool():
     return {
@@ -68,6 +69,12 @@ def agent(user_input: str):
 
     if "who am i in aws" in text or "aws identity" in text:
         return aws_identity_tool()
+
+    if "terraform" in text and "ec2" in text:
+        return terraform_ec2_tool()
+
+    if "terraform" in text and "vpc" in text:
+        return terraform_vpc_tool()
 
     if "terraform" in text and "s3" in text:
         return terraform_s3_tool()
