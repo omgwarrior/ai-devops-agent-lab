@@ -1,10 +1,9 @@
 from datetime import datetime
+
 from app.memory.redis_memory import save_memory, get_memory
-from app.tools.aws_tools import aws_identity_tool, eks_clusters_tool, cloud_inventory_tool
-from app.tools.ansible_tools import ansible_nginx_playbook_tool, ansible_inventory_skeleton_tool
-from app.tools.terraform_tools import terraform_s3_tool, terraform_ec2_tool, terraform_eks_tool
-from app.tools.terraform_vpc import terraform_vpc_tool
 from app.tools.router import route_request
+from app.tools.tool_registry import run_tool
+
 
 def nba_playoffs_tool():
     return {
@@ -36,10 +35,9 @@ def devops_tool():
 
 
 def agent(user_input: str):
-    text = user_input.lower()
-    route = route_request(text)
+    route = route_request(user_input)
 
-    if "my name is" in text:
+    if route == "save_name":
         name = user_input.split("is", 1)[1].strip()
         save_memory("user:name", name)
         return {
@@ -50,8 +48,7 @@ def agent(user_input: str):
             "message": f"Nice to meet you, {name}. I saved your name in Redis memory.",
         }
 
-    
-    if "what is my name" in text:
+    if route == "get_name":
         name = get_memory("user:name")
         return {
             "tool": "redis_memory_tool",
@@ -61,50 +58,16 @@ def agent(user_input: str):
             "message": f"Your name is {name}." if name else "I do not have your name saved yet.",
         }
 
-    if "nba" in text or "playoff" in text or "finals" in text:
+    if route == "nba":
         return nba_playoffs_tool()
 
-    if "who am i in aws" in text or "aws identity" in text:
-        return aws_identity_tool()
+    tool_response = run_tool(route)
+    if tool_response:
+        return tool_response
 
-    if route == "terraform_eks":
-        return terraform_eks_tool()
-
-    if "terraform" in text and "eks" in text:
-        return terraform_eks_tool()
-
-    if "eks" in text or "kubernetes cluster" in text:
-        return eks_clusters_tool()
-
-    if "who am i in aws" in text or "aws identity" in text:
-        return aws_identity_tool()
-
-
-    if "terraform" in text and "ec2" in text:
-        return terraform_ec2_tool()
-
-    if "terraform" in text and "vpc" in text:
-        return terraform_vpc_tool()
-
-    if "terraform" in text and "s3" in text:
-        return terraform_s3_tool()
-    
-    if "aws" in text or "terraform" in text or "ansible" in text or "devops" in text:
+    if route == "devops":
         return devops_tool()
-    
-    if "ec2" in text or "instances" in text:
-        return ec2_instances_tool()
-    
-    if "ansible inventory" in text or "inventory skeleton" in text:
-        return ansible_inventory_skeleton_tool()
 
-    if "ansible" in text and ("nginx" in text or "playbook" in text):
-        return ansible_nginx_playbook_tool()
-       
-    if "aws environment" in text or "cloud inventory" in text:
-        return cloud_inventory_tool()
-    
-    
     return {
         "tool": "default_agent_response",
         "input": user_input,
