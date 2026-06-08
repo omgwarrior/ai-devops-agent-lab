@@ -1,0 +1,46 @@
+def route_request(text: str) -> str:
+    text = text.lower()
+
+    if "terraform" in text and "eks" in text:
+        return "terraform_eks"
+
+    if "terraform" in text and "ec2" in text:
+        return "terraform_ec2"
+
+    if "terraform" in text and "vpc" in text:
+        return "terraform_vpc"
+
+    if "terraform" in text and "s3" in text:
+        return "terraform_s3"
+
+    if "ansible inventory" in text or "inventory skeleton" in text:
+        return "ansible_inventory"
+
+    if "ansible" in text and ("nginx" in text or "playbook" in text):
+        return "ansible_playbook"
+
+    if "who am i in aws" in text or "aws identity" in text:
+        return "aws_identity"
+
+    if "aws environment" in text or "cloud inventory" in text:
+        return "cloud_inventory"
+
+    if "ec2" in text or "instances" in text:
+        return "ec2_instances"
+
+    if "eks" in text or "kubernetes cluster" in text:
+        return "eks_clusters"
+
+    if "nba" in text or "playoff" in text or "finals" in text:
+        return "nba"
+
+    if "my name is" in text:
+        return "save_name"
+
+    if "what is my name" in text:
+        return "get_name"
+
+    if "aws" in text or "terraform" in text or "ansible" in text or "devops" in text:
+        return "devops"
+
+    return "default"
