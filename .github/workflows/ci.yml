@@ -1,0 +1,59 @@
+name: AI DevOps Agent CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify Redis
+        run: |
+          redis-cli -h localhost ping
+
+      - name: Start FastAPI app
+        run: |
+          uvicorn app.main:app --host 127.0.0.1 --port 8001 &
+          sleep 5
+
+      - name: Test health endpoint
+        run: |
+          curl -f http://127.0.0.1:8001/health
+
+      - name: Test Terraform EKS generator
+        run: |
+          curl -f "http://127.0.0.1:8001/ask?question=create%20terraform%20for%20eks"
+
+      - name: Test Ansible generator
+        run: |
+          curl -f "http://127.0.0.1:8001/ask?question=create%20ansible%20playbook%20for%20nginx"
+
+      - name: Test Redis memory
+        run: |
+          curl -f "http://127.0.0.1:8001/ask?question=my%20name%20is%20Alvin"
+          curl -f "http://127.0.0.1:8001/ask?question=what%20is%20my%20name"
