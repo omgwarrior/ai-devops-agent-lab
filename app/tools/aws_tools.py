@@ -56,3 +56,31 @@ def ec2_instances_tool(region="us-west-2"):
             region
         ]),
     }
+def cloud_inventory_tool(region="us-west-2"):
+    return {
+        "tool": "cloud_inventory_tool",
+        "identity": run_aws_command([
+            "aws", "sts", "get-caller-identity"
+        ]),
+        "eks": run_aws_command([
+            "aws", "eks", "list-clusters",
+            "--region", region
+        ]),
+        "ec2": run_aws_command([
+            "aws", "ec2", "describe-instances",
+            "--region", region
+        ]),
+        "ecr": run_aws_command([
+            "aws", "ecr", "describe-repositories",
+            "--region", region
+        ]),
+    }
+def terraform_s3_tool():
+    return {
+        "tool": "terraform_s3_tool",
+        "terraform": """
+resource "aws_s3_bucket" "demo" {
+  bucket = "ai-devops-agent-demo"
+}
+"""
+    }

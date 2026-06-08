@@ -1,8 +1,8 @@
 from datetime import datetime
 from app.memory.redis_memory import save_memory, get_memory
-from app.tools.aws_tools import aws_identity_tool, eks_clusters_tool
+from app.tools.aws_tools import aws_identity_tool, eks_clusters_tool, cloud_inventory_tool
 from app.tools.ansible_tools import ansible_nginx_playbook_tool, ansible_inventory_skeleton_tool
-
+from app.tools.terraform_tools import terraform_s3_tool
 
 def nba_playoffs_tool():
     return {
@@ -80,6 +80,13 @@ def agent(user_input: str):
 
     if "ansible" in text and ("nginx" in text or "playbook" in text):
         return ansible_nginx_playbook_tool()
+    
+    if "terraform" in text and "s3" in text:
+        return terraform_s3_tool()
+    
+    if "aws environment" in text or "cloud inventory" in text:
+        return cloud_inventory_tool()
+    
     
     return {
         "tool": "default_agent_response",
