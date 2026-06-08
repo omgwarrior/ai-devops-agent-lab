@@ -64,15 +64,16 @@ def agent(user_input: str):
 
     if "who am i in aws" in text or "aws identity" in text:
         return aws_identity_tool()
-   
+
+    if "terraform" in text and "eks" in text:
+        return terraform_eks_tool()
+
     if "eks" in text or "kubernetes cluster" in text:
         return eks_clusters_tool()
 
     if "who am i in aws" in text or "aws identity" in text:
         return aws_identity_tool()
 
-    if "terraform" in text and "eks" in text:
-        return terraform_eks_tool()
 
     if "terraform" in text and "ec2" in text:
         return terraform_ec2_tool()
