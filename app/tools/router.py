@@ -1,6 +1,9 @@
 def route_request(text: str) -> str:
     text = text.lower()
 
+    if "what tools" in text or "list tools" in text or "available tools" in text:
+        return "list_tools"
+
     if "terraform" in text and "eks" in text:
         return "terraform_eks"
 
@@ -42,5 +45,5 @@ def route_request(text: str) -> str:
 
     if "aws" in text or "terraform" in text or "ansible" in text or "devops" in text:
         return "devops"
-
+    
     return "default"

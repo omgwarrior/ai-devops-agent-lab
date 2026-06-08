@@ -17,7 +17,7 @@ from app.tools.terraform_tools import (
 )
 
 from app.tools.terraform_vpc import terraform_vpc_tool
-
+from app.tools.tool_info import list_tools_tool
 
 TOOLS = {
     "aws_identity": aws_identity_tool,
@@ -32,8 +32,9 @@ TOOLS = {
     "terraform_vpc": terraform_vpc_tool,
     "terraform_ec2": terraform_ec2_tool,
     "terraform_eks": terraform_eks_tool,
-}
 
+    "list_tools": list_tools_tool,
+}
 
 def run_tool(route: str):
     tool = TOOLS.get(route)
