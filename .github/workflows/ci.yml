@@ -34,7 +34,12 @@ jobs:
 
       - name: Verify Redis
         run: |
-          redis-cli -h localhost ping
+          python - <<'PY'
+          import redis
+          r = redis.Redis(host="localhost", port=6379, decode_responses=True)
+          assert r.ping() is True
+          print("Redis PONG")
+          PY
 
       - name: Start FastAPI app
         run: |
