@@ -69,6 +69,9 @@ def agent(user_input: str):
     if "who am i in aws" in text or "aws identity" in text:
         return aws_identity_tool()
 
+    if "terraform" in text and "s3" in text:
+        return terraform_s3_tool()
+    
     if "aws" in text or "terraform" in text or "ansible" in text or "devops" in text:
         return devops_tool()
     
@@ -80,10 +83,7 @@ def agent(user_input: str):
 
     if "ansible" in text and ("nginx" in text or "playbook" in text):
         return ansible_nginx_playbook_tool()
-    
-    if "terraform" in text and "s3" in text:
-        return terraform_s3_tool()
-    
+       
     if "aws environment" in text or "cloud inventory" in text:
         return cloud_inventory_tool()
     
