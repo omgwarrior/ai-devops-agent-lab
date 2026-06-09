@@ -1,6 +1,9 @@
 def route_request(text: str) -> str:
     text = text.lower()
 
+    if "agent status" in text or "system status" in text:
+        return "agent_status"
+
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 
