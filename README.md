@@ -2,181 +2,431 @@
 
 ## Overview
 
-AI DevOps Agent Lab is a Python/FastAPI-based AI DevOps assistant designed to learn:
+AI DevOps Agent Lab is a Python-based AI Agent platform designed to demonstrate modern DevOps, SRE, Platform Engineering, Cloud Engineering, Infrastructure as Code (IaC), and AI Agent concepts.
 
-- AI Agents
-- AWS
-- Terraform
-- Ansible
-- Redis
-- Docker
-- Platform Engineering
-- SRE Practices
+The project combines FastAPI, Redis memory, AWS integrations, Terraform generation, Ansible automation, Docker, Docker Compose, GitHub Actions CI/CD, and an extensible Agent architecture using a Router and Tool Registry pattern.
 
-## Features
+The goal is to simulate how modern AI Agents interact with cloud platforms, infrastructure automation, and operational tooling.
 
-### AWS Tools
+---
 
-- AWS Identity Tool
-- AWS EKS Inventory Tool
-- AWS EC2 Inventory Tool
-- AWS Cloud Inventory Tool
+## Architecture
 
-### Terraform Generators
+```text
+User
+  ↓
+FastAPI API
+  ↓
+Agent
+  ↓
+Router
+  ↓
+Tool Registry
+  ↓
+┌─────────────────────────────┐
+│ Redis Memory                │
+│ AWS Identity Tool           │
+│ AWS EC2 Inventory Tool      │
+│ AWS EKS Inventory Tool      │
+│ Cloud Inventory Tool        │
+│ Terraform Generators        │
+│ Ansible Generators          │
+│ NBA Stats Tool              │
+│ Tool Discovery              │
+└─────────────────────────────┘
+```
 
-- Terraform S3 Generator
-- Terraform VPC Generator
-- Terraform EC2 Generator
-- Terraform EKS Generator
+---
 
-### Ansible Generators
+## Technology Stack
 
-- Ansible Inventory Generator
-- Ansible Nginx Playbook Generator
+### Languages
+
+* Python 3.12
+
+### Frameworks
+
+* FastAPI
+* Uvicorn
+
+### Memory Layer
+
+* Redis
+
+### Cloud
+
+* AWS CLI
+* IAM
+* EC2
+* EKS
+* STS
+
+### Infrastructure as Code
+
+* Terraform
+
+### Configuration Management
+
+* Ansible
+
+### Containerization
+
+* Docker
+* Docker Compose
+
+### CI/CD
+
+* GitHub Actions
+* GitHub CLI
+
+---
+
+## Current Features
 
 ### Memory
 
-- Redis Memory Support
+* Save user information into Redis
+* Retrieve stored user information
+* Persistent memory between requests
 
-### API
+Example:
 
-- FastAPI
-- /health endpoint
-- /ask endpoint
+```text
+my name is Alvin
+```
 
-### Docker
+```text
+what is my name
+```
 
-- Dockerized FastAPI Application
+---
 
-## Project Structure
+### AWS Identity Tool
 
-\`\`\`
-ai-devops-agent-lab/
-├── app/
-│   ├── main.py
-│   ├── agent.py
-│   ├── memory/
-│   └── tools/
-├── Dockerfile
-├── requirements.txt
-└── README.md
-\`\`\`
+Retrieve current AWS identity:
 
-## Running Locally
-
-\`\`\`bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-uvicorn app.main:app --reload --port 8001
-\`\`\`
-
-## Health Check
-
-\`\`\`bash
-curl -s http://127.0.0.1:8001/health | python3 -m json.tool
-\`\`\`
-
-## Example Commands
-
-### AWS Identity
-
-\`\`\`
+```text
 who am i in aws
-\`\`\`
+```
 
-### EKS Inventory
+Returns:
 
-\`\`\`
-do i have eks clusters
-\`\`\`
+* AWS Account ID
+* IAM User
+* AWS ARN
 
-### Cloud Inventory
+---
 
-\`\`\`
-show my aws environment
-\`\`\`
+### AWS EKS Inventory Tool
 
-### Terraform S3
+Retrieve Kubernetes cluster inventory:
 
-\`\`\`
+```text
+show eks clusters
+```
+
+Returns:
+
+* Cluster Names
+* AWS Region
+
+---
+
+### AWS EC2 Inventory Tool
+
+Retrieve EC2 inventory:
+
+```text
+show ec2 instances
+```
+
+Returns:
+
+* Instance IDs
+* Instance State
+* Instance Type
+
+---
+
+### Cloud Inventory Tool
+
+Retrieve AWS environment information:
+
+```text
+show cloud inventory
+```
+
+Returns:
+
+* EKS Clusters
+* EC2 Instances
+* AWS Identity
+
+---
+
+## Terraform Generators
+
+### S3 Generator
+
+```text
 create terraform for s3
-\`\`\`
+```
 
-### Terraform VPC
+Generates Terraform HCL for:
 
-\`\`\`
+* AWS S3 Bucket
+
+### VPC Generator
+
+```text
 create terraform for vpc
-\`\`\`
+```
 
-### Terraform EC2
+Generates Terraform HCL for:
 
-\`\`\`
+* VPC
+* Public Subnet
+
+### EC2 Generator
+
+```text
 create terraform for ec2
-\`\`\`
+```
 
-### Terraform EKS
+Generates Terraform HCL for:
 
-\`\`\`
+* EC2 Instance
+* Security Groups
+
+### EKS Generator
+
+```text
 create terraform for eks
-\`\`\`
+```
 
-### Ansible Playbook
+Generates Terraform HCL for:
 
-\`\`\`
+* EKS Cluster
+* Managed Node Groups
+* IRSA
+* VPC Integration
+
+---
+
+## Ansible Generators
+
+### Inventory Skeleton Generator
+
+```text
+create ansible inventory
+```
+
+Generates:
+
+```text
+inventory/
+group_vars/
+host_vars/
+playbooks/
+roles/
+```
+
+### NGINX Playbook Generator
+
+```text
 create ansible playbook for nginx
-\`\`\`
+```
+
+Generates:
+
+* NGINX Installation
+* Service Startup
+* Service Enablement
+
+---
+
+## Tool Discovery
+
+The agent can list available tools.
+
+Example:
+
+```text
+what tools do you have
+```
+
+Returns:
+
+* Redis Memory
+* AWS Identity
+* EKS Inventory
+* EC2 Inventory
+* Cloud Inventory
+* Terraform Generators
+* Ansible Generators
+* NBA Tool
+
+---
+
+## Agent Routing
+
+The platform uses a Router pattern to determine user intent.
+
+Example:
+
+```text
+create terraform for eks
+```
+
+Router:
+
+```text
+terraform_eks
+```
+
+Tool Registry:
+
+```text
+terraform_eks_tool()
+```
+
+Response:
+
+```text
+Terraform HCL
+```
+
+---
+
+## Tool Registry
+
+The Tool Registry provides dynamic tool dispatching.
+
+Benefits:
+
+* Centralized tool management
+* Easier extensibility
+* Cleaner architecture
+* Similar design patterns used by modern AI Agent frameworks
+
+---
 
 ## Docker
 
 Build:
 
-\`\`\`bash
-docker build -t ai-devops-agent-lab .
-\`\`\`
+```bash
+docker build -t ai-devops-agent .
+```
 
 Run:
 
-\`\`\`bash
-docker run -p 8000:8000 ai-devops-agent-lab
-\`\`\`
+```bash
+docker run -p 8000:8000 ai-devops-agent
+```
+
+---
+
+## Docker Compose
+
+Start:
+
+```bash
+docker compose up --build
+```
+
+Components:
+
+* FastAPI
+* Redis
+
+---
+
+## GitHub Actions CI/CD
+
+Pipeline validates:
+
+* Dependency installation
+* Redis availability
+* FastAPI startup
+* Health endpoint
+* Terraform generation
+* Ansible generation
+* Redis memory functionality
+
+Manual execution:
+
+```bash
+gh workflow run ci.yml --ref main
+```
+
+Watch workflow:
+
+```bash
+gh run watch
+```
+
+---
+
+## API Examples
+
+Health Check:
+
+```bash
+curl http://127.0.0.1:8001/health
+```
+
+Tool Discovery:
+
+```bash
+curl "http://127.0.0.1:8001/ask?question=what%20tools%20do%20you%20have"
+```
+
+AWS Identity:
+
+```bash
+curl "http://127.0.0.1:8001/ask?question=who%20am%20i%20in%20aws"
+```
+
+Terraform EKS:
+
+```bash
+curl "http://127.0.0.1:8001/ask?question=create%20terraform%20for%20eks"
+```
+
+Ansible Playbook:
+
+```bash
+curl "http://127.0.0.1:8001/ask?question=create%20ansible%20playbook%20for%20nginx"
+```
+
+---
 
 ## Roadmap
 
-Completed:
+### v0.3
 
-- FastAPI
-- Redis Memory
-- AWS Identity Tool
-- AWS EKS Tool
-- AWS EC2 Tool
-- Cloud Inventory Tool
-- Terraform S3 Generator
-- Terraform VPC Generator
-- Terraform EC2 Generator
-- Terraform EKS Generator
-- Ansible Inventory Generator
-- Ansible Playbook Generator
-- Docker Support
+* GitHub Actions Tool
+* Workflow Execution Tool
+* Tool Metadata Registry
+* Enhanced Cloud Inventory
 
-Next:
+### v0.4
 
-- GitHub Actions CI/CD
-- Docker Compose
-- Redis Container
-- OpenAI Integration
-- ECS Deployment
-- EKS Deployment
-- Web UI
-- Grafana Observability
+* OpenAI Integration
+* Anthropic Integration
+* Local LLM Support (Ollama)
 
-## Philosophy
+### v0.5
 
-Learn by Building.
+* Autonomous Tool Selection
+* Multi-step Agent Workflows
+* Infrastructure Deployment Automation
 
-Build.
-Break.
-Fix.
-Improve.
-Repeat.
+---
+
+## Author
+
+Alvin Cly
+
+AI DevOps Agent Lab is a personal portfolio project demonstrating AI Agent Engineering, Platform Engineering, DevOps, SRE, Cloud Engineering, Infrastructure Automation, and Operational Excellence concepts.
