@@ -44,8 +44,9 @@ jobs:
 
       - name: Start FastAPI app
         run: |
-          uvicorn app.main:app --host 127.0.0.1 --port 8001 &
-          sleep 5
+          uvicorn app.main:app --host 127.0.0.1 --port 8001 > unicorn.log 2>&1 &
+          sleep 8
+		  cat unicorn.log
 
       - name: Test health endpoint
         run: |
