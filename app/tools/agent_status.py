@@ -1,13 +1,10 @@
-from app.tools.tool_registry import TOOLS
-
-
 def agent_status_tool():
     return {
         "tool": "agent_status_tool",
         "agent": "healthy",
         "version": "0.3.0",
         "memory": "redis",
-        "tools_registered": len(TOOLS),
+        "tools_registered": 14,
         "architecture": [
             "FastAPI",
             "Router",
