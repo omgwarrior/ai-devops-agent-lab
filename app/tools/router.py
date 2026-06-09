@@ -43,6 +43,9 @@ def route_request(text: str) -> str:
     if "ansible" in text and ("nginx" in text or "playbook" in text):
         return "ansible_playbook"
 
+    if "run github workflow" in text or "trigger github actions" in text or "run ci" in text:
+        return "github_workflow"
+
     if "aws" in text or "terraform" in text or "ansible" in text or "devops" in text:
         return "devops"
     

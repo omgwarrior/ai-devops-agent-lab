@@ -18,6 +18,7 @@ from app.tools.terraform_tools import (
 
 from app.tools.terraform_vpc import terraform_vpc_tool
 from app.tools.tool_info import list_tools_tool
+from app.tools.github_tools import github_workflow_tool
 
 TOOLS = {
     "aws_identity": aws_identity_tool,
@@ -34,6 +35,8 @@ TOOLS = {
     "terraform_eks": terraform_eks_tool,
 
     "list_tools": list_tools_tool,
+
+    "github_workflow": github_workflow_tool,
 }
 
 def run_tool(route: str):
