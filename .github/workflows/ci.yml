@@ -44,9 +44,9 @@ jobs:
 
       - name: Start FastAPI app
         run: |
-          uvicorn app.main:app --host 127.0.0.1 --port 8001 > unicorn.log 2>&1 &
+          uvicorn app.main:app --host 127.0.0.1 --port 8001 > uvicorn.log 2>&1 &
           sleep 8
-		  cat unicorn.log
+          cat uvicorn.log
 
       - name: Test health endpoint
         run: |
@@ -64,3 +64,7 @@ jobs:
         run: |
           curl -f "http://127.0.0.1:8001/ask?question=my%20name%20is%20Alvin"
           curl -f "http://127.0.0.1:8001/ask?question=what%20is%20my%20name"
+
+      - name: Test agent status
+        run: |
+          curl -f "http://127.0.0.1:8001/ask?question=agent%20status"
