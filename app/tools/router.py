@@ -13,6 +13,9 @@ def route_request(text: str) -> str:
     if "system overview" in text or "platform overview" in text or "overall status" in text:
         return "system_overview"
     
+    if "cloudwatch alarms" in text or "show alarms" in text or "aws alarms" in text:
+        return "cloudwatch_alarms"
+
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 

@@ -4,6 +4,7 @@ from app.tools.aws_tools import (
     ec2_instances_tool,
     cloud_inventory_tool,
     aws_health_tool,
+    cloudwatch_alarms_tool,
 )
 
 from app.tools.ansible_tools import (
@@ -46,6 +47,8 @@ TOOLS = {
 
     "aws_health": aws_health_tool,
     "system_overview": system_overview_tool,
+    "cloudwatch_alarms": cloudwatch_alarms_tool,
+    
 }
 
 def run_tool(route: str):

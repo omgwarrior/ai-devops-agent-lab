@@ -114,3 +114,37 @@ def aws_health_tool(region: str = "us-west-2"):
             "ec2_inventory": "ok" if "Reservations" in ec2 else "error",
         },
     }
+
+
+def cloudwatch_alarms_tool(region: str = "us-west-2"):
+    alarms = run_aws_command([
+        "aws",
+        "cloudwatch",
+        "describe-alarms",
+        "--region",
+        region,
+    ])
+
+    alarm_count = 0
+    alarm_states = {
+        "OK": 0,
+        "ALARM": 0,
+        "INSUFFICIENT_DATA": 0,
+    }
+
+    if isinstance(alarms, dict):
+        metric_alarms = alarms.get("MetricAlarms", [])
+        alarm_count = len(metric_alarms)
+
+        for alarm in metric_alarms:
+            state = alarm.get("StateValue", "UNKNOWN")
+            if state in alarm_states:
+                alarm_states[state] += 1
+
+    return {
+        "tool": "cloudwatch_alarms_tool",
+        "region": region,
+        "alarm_count": alarm_count,
+        "alarm_states": alarm_states,
+        "alarms": alarms,
+    }
