@@ -148,3 +148,34 @@ def cloudwatch_alarms_tool(region: str = "us-west-2"):
         "alarm_states": alarm_states,
         "alarms": alarms,
     }
+
+
+def cloudwatch_metrics_tool(region: str = "us-west-2"):
+    metrics = run_aws_command([
+        "aws",
+        "cloudwatch",
+        "list-metrics",
+        "--region",
+        region,
+        "--max-items",
+        "20",
+    ])
+
+    metric_count = 0
+    namespaces = []
+
+    if isinstance(metrics, dict):
+        metric_list = metrics.get("Metrics", [])
+        metric_count = len(metric_list)
+        namespaces = sorted(list(set(
+            metric.get("Namespace", "UNKNOWN")
+            for metric in metric_list
+        )))
+
+    return {
+        "tool": "cloudwatch_metrics_tool",
+        "region": region,
+        "metric_count_returned": metric_count,
+        "namespaces": namespaces,
+        "metrics": metrics,
+    }

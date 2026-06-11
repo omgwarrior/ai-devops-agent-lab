@@ -16,6 +16,9 @@ def route_request(text: str) -> str:
     if "cloudwatch alarms" in text or "show alarms" in text or "aws alarms" in text:
         return "cloudwatch_alarms"
 
+    if "cloudwatch metrics" in text or "show metrics" in text or "aws metrics" in text:
+        return "cloudwatch_metrics"
+
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 
