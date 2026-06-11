@@ -10,6 +10,9 @@ def route_request(text: str) -> str:
     if "aws health" in text or "check aws health" in text:
         return "aws_health"
 
+    if "system overview" in text or "platform overview" in text or "overall status" in text:
+        return "system_overview"
+    
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 
