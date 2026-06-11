@@ -18,7 +18,7 @@ from app.tools.terraform_tools import (
 
 from app.tools.terraform_vpc import terraform_vpc_tool
 from app.tools.tool_info import list_tools_tool
-from app.tools.github_tools import github_workflow_tool
+from app.tools.github_tools import github_workflow_tool, github_workflow_status_tool
 from app.tools.agent_status import agent_status_tool
 
 TOOLS = {
@@ -40,6 +40,7 @@ TOOLS = {
     "github_workflow": github_workflow_tool,
 
     "agent_status": agent_status_tool,
+    "github_workflow_status": github_workflow_status_tool,
 }
 
 def run_tool(route: str):

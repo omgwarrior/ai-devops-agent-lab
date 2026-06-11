@@ -34,3 +34,36 @@ def github_workflow_tool():
             "status": "failed",
             "error": "GitHub CLI is not installed or not found in PATH",
         }
+
+
+def github_workflow_status_tool():
+    try:
+        result = subprocess.run(
+            ["gh", "run", "list", "--limit", "1"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+
+        return {
+            "tool": "github_workflow_status_tool",
+            "status": "success",
+            "latest_run": result.stdout.strip(),
+            "stderr": result.stderr.strip(),
+        }
+
+    except subprocess.CalledProcessError as e:
+        return {
+            "tool": "github_workflow_status_tool",
+            "status": "failed",
+            "error": "GitHub run list command failed",
+            "stdout": e.stdout,
+            "stderr": e.stderr,
+        }
+
+    except FileNotFoundError:
+        return {
+            "tool": "github_workflow_status_tool",
+            "status": "failed",
+            "error": "GitHub CLI is not installed or not found in PATH",
+        }

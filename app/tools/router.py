@@ -4,6 +4,9 @@ def route_request(text: str) -> str:
     if "agent status" in text or "system status" in text:
         return "agent_status"
 
+    if "github workflow status" in text or "github actions status" in text or "ci status" in text:
+        return "github_workflow_status"
+    
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 
