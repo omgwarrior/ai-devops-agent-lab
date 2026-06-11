@@ -6,6 +6,7 @@ from app.tools.aws_tools import (
     aws_health_tool,
     cloudwatch_alarms_tool,
     cloudwatch_metrics_tool,
+    s3_buckets_tool,
 )
 
 from app.tools.ansible_tools import (
@@ -50,7 +51,8 @@ TOOLS = {
     "system_overview": system_overview_tool,
     "cloudwatch_alarms": cloudwatch_alarms_tool,
     "cloudwatch_metrics": cloudwatch_metrics_tool,
-    
+
+    "s3_buckets": s3_buckets_tool,
 }
 
 def run_tool(route: str):

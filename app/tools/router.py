@@ -19,6 +19,10 @@ def route_request(text: str) -> str:
     if "cloudwatch metrics" in text or "show metrics" in text or "aws metrics" in text:
         return "cloudwatch_metrics"
 
+    
+    if "s3 buckets" in text or "show s3" in text or "list buckets" in text:
+        return "s3_buckets"
+
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 

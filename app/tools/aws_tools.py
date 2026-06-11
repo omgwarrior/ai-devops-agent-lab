@@ -179,3 +179,29 @@ def cloudwatch_metrics_tool(region: str = "us-west-2"):
         "namespaces": namespaces,
         "metrics": metrics,
     }
+
+
+def s3_buckets_tool():
+    buckets = run_aws_command([
+        "aws",
+        "s3api",
+        "list-buckets",
+    ])
+
+    bucket_count = 0
+    bucket_names = []
+
+    if isinstance(buckets, dict):
+        bucket_list = buckets.get("Buckets", [])
+        bucket_count = len(bucket_list)
+        bucket_names = [
+            bucket.get("Name")
+            for bucket in bucket_list
+        ]
+
+    return {
+        "tool": "s3_buckets_tool",
+        "bucket_count": bucket_count,
+        "bucket_names": bucket_names,
+        "buckets": buckets,
+    }
