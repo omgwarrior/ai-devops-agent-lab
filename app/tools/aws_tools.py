@@ -84,3 +84,33 @@ resource "aws_s3_bucket" "demo" {
 }
 """
     }
+
+def aws_health_tool(region: str = "us-west-2"):
+    identity = run_aws_command(["aws", "sts", "get-caller-identity"])
+    eks = run_aws_command(["aws", "eks", "list-clusters", "--region", region])
+    ec2 = run_aws_command(["aws", "ec2", "describe-instances", "--region", region])
+
+    ec2_count = 0
+    if isinstance(ec2, dict) and "Reservations" in ec2:
+        for reservation in ec2.get("Reservations", []):
+            ec2_count += len(reservation.get("Instances", []))
+
+    eks_count = 0
+    if isinstance(eks, dict) and "clusters" in eks:
+        eks_count = len(eks.get("clusters", []))
+
+    return {
+        "tool": "aws_health_tool",
+        "region": region,
+        "status": "healthy",
+        "identity": identity,
+        "summary": {
+            "eks_clusters": eks_count,
+            "ec2_instances": ec2_count,
+        },
+        "checks": {
+            "sts_identity": "ok" if "Account" in identity else "error",
+            "eks_inventory": "ok" if "clusters" in eks else "error",
+            "ec2_inventory": "ok" if "Reservations" in ec2 else "error",
+        },
+    }

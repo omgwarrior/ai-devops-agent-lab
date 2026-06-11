@@ -7,6 +7,9 @@ def route_request(text: str) -> str:
     if "github workflow status" in text or "github actions status" in text or "ci status" in text:
         return "github_workflow_status"
     
+    if "aws health" in text or "check aws health" in text:
+        return "aws_health"
+
     if "what tools" in text or "list tools" in text or "available tools" in text:
         return "list_tools"
 

@@ -3,6 +3,7 @@ from app.tools.aws_tools import (
     eks_clusters_tool,
     ec2_instances_tool,
     cloud_inventory_tool,
+    aws_health_tool,
 )
 
 from app.tools.ansible_tools import (
@@ -41,6 +42,8 @@ TOOLS = {
 
     "agent_status": agent_status_tool,
     "github_workflow_status": github_workflow_status_tool,
+
+    "aws_health": aws_health_tool,
 }
 
 def run_tool(route: str):
