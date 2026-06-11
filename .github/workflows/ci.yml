@@ -68,3 +68,9 @@ jobs:
       - name: Test agent status
         run: |
           curl -f "http://127.0.0.1:8001/ask?question=agent%20status"
+          
+      - name: Test system overview
+        run: |
+          curl -s \
+          "http://127.0.0.1:8001/ask?question=system%20overview" \
+          | grep system_overview_tool
